@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="description" content="ECE 4760 : Kofi, Bryce, Lily">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+  <title>ECE 4760</title>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div id="header_wrap" class="outer">
+    <header class="inner">
+      <!--<a id="forkme_banner" href="https://github.coecis.cornell.edu/kae87/ECE3400-kae87">View on GitHub</a>-->
+
+      <h1 id="project_title">ECE 4760 Final Project: TKButtons</h1>
+      <h3 id="project_name" style="color: #FFFFFF;"> Kofi Amoako (kae87), Bryce Roth (ber72), Lily Yu (gly6)</h3>
+      <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover {
+          background-color: #111;
+        }
+
+        .active {
+          background-color: #04AA6D;
+        }
+      </style>
+      </head>
+
+      <body>
+
+        <ul>
+          <li><a class="active" href="index.html">Introduction</a></li>
+          <li><a href="high_level_design.html">High Level Design</a></li>
+          <li><a href="program_hardware_design.html">Program/Hardware Design</a></li>
+          <li><a href="result.html">Result</a></li>
+          <li><a href="conclusion.html">Conclusion</a></li>
+          <li><a href="appendix.html">Appendix</a> </li>
+        </ul>
+    </header>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+      <h1>Introduction</h1>
+      <p>Fighting games are rising in popularity around the globe. 
+        However, a consistent barrier to new player entry has been the difficulty of the inputs. 
+        Rather than pressing a single button for attacks and moves, 
+        fighting games often require complex frame-perfect combinations of buttons to perform combos necessary to compete at even basic 
+        levels. Many new players find that learning these combos and button strings are not worth learning, 
+        and become disenchanted with fighting games early on. 
+        This problem also extends to players at the highest level, 
+        who may have difficulty consistently inputting the most powerful and optimal combos possible. 
+      </p>
+      <p>
+        To help solve this problem, we created a project called TKButtons. With the modified controller (Betsy) and our 
+        program, you can record your combo ahead of time, and then playback during the game. The controller contains a PIC32 
+        microcontroller and some circuity which allows the player to play the game through a arcade stick. When the player is ready, then 
+        the player can hit the record button. The PIC32 controller then keep tracks when each button and stick input were hit and the time 
+        that they were hit. To finish the recording, the player hits one of the playback buttons. To play the recording, the player 
+        just needs to hit either the left or right playback button. The PIC32 will then play through the button/stick inputs that 
+        were just recorded. The player can also cancel the recording and the playback whenever they want. In this project, we 
+        will be mostly explaining the controller in use with the game Guilty Gear. If you are unfamiliar with the game, we recommend
+        you to check out the appendix which have guides and instruction to all the different moves that we are explaining on this 
+        website.
+      </p>
+      <p> 
+        Take Tiger Knee Bomber (TKB) for example, the case study for this project. In the game Guilty Gear, the player controls 
+        Axl Low to do this combo. To do massive damage however, the player needs to loop TKB three times and then break the wall. This
+        combo can do up to 60% of the opponent HP. However, the combo loop is know to be hard to pull off, which can lead to player when 
+        they mess up to be vulnerable to the opponent attack. With this project though, the player can easily record the TKB combo 
+        beforehand, and then just hit the playback button at the right timing. Take the video below as an example. 
+      </p>
+
+
+      <h2>Quotes</h2>
+      <h3>"Really Serious Engineering" - Hunter Adams</h3>
+      <h3>"This project is held together by electrical tape and dreams" - Bryce Roth</h3>
+      <h3>"We don't want to inconvenience the player, only the opponent" - Bryce Roth</h3>
+      <h3>While looking at Goldlewis, "Is that guy suppose to be Donald Trump" - Bruce Land</h3>
+      <h3>"I wish I was drunk while putting together this circuit, because then I would have an excuse" - Bryce Roth</h3>
+      <h3>"That just looks like a mismatched rainbow" - Emlen Brown</h3>
+    </section>
+  </div>
+
+  <!-- FOOTER  -->
+  <div id="footer_wrap" class="outer">
+    <footer class="inner">
+    </footer>
+  </div>
+
+
+
+</body>
+
+</html>
