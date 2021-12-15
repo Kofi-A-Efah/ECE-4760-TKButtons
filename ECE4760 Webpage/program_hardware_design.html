@@ -160,7 +160,7 @@
       </p>
       <figure>
         <img src = "images/HardwareSoftwareDesign/image1.png" alt="button_layout">
-        <figcaption>Figure 7. Full schematic.
+        <figcaption>Figure 7: Full schematic.
         </figcaption>
       </figure>
       <p>When all components work in tandem, 
@@ -175,10 +175,21 @@
       </p>
       <figure>
         <img src = "images/HardwareSoftwareDesign/image3.png" alt="button_layout">
-        <figcaption>Figure 8. Initial setup of button enum, button press struct, and recorded press arrays.
+        <figcaption>Figure 8: Initial setup of button enum, button press struct, and recorded press arrays.
         </figcaption>
+          <p>Before understanding how any other thread works, we must discuss the format in which button presses are stored and played back. When the PIC32 is recording button presses, each button press and release is stored inside the temp_press array, which is copied to the press array at the end of the recording. Each element of the array is a struct consisting of three data values: the button pressed, the time pressed, and the “edge” of the button press (high or low). The button pressed is stored as a “buttons” enum, each value of which is representative of one of the arcade stick’s buttons. These include the eight buttons for attacking (X, Y, A, B, LT, LB, RT, RB), as well as the four joystick cardinal directions (up, down, left, right). Since the joystick hardware consists of four limit switches, we do not have to work at all with ADCs in our project and can treat the joystick as a set of four buttons. The timepressed stores the time at which the button was pressed. This time is updated using the PIC32’s timer module, which causes an interrupt at a speed of 120 frames per second. The start_frame_timing variable will control whether the sys_time_frame variable (the system time) will be updated in the ISR. </p>
+          
       </figure>
-    </section>
+        <img src = "images/fig8.png" alt="button_layout">
+        <figcaption>Figure 9: Code demonstrating how we read button inputs
+            
+        </figcaption>    
+
+      <p>The protothread_key thread focuses on reading the button presses and adding it to the temp_press. We have define multiple variables which will track the state of each button on the arcade stick (X,Y,A,B, etc). Additionally, we defined the buttonPressesY, buttonPressesYY, buttonPressesZ, buttonPressesZZ variables, which will store the value returned after reading the first and second port expanders. The thread will check if the pin corresponding to the button is set (checking if the correct bit is set to zero) and if the specific button has not been pressed. If this condition is true, then the input is added to the temp_press array. If the exact opposite condition is true, the input will still be added, but with the buttonState argument set as a 0. This indicates that the button was released (negative edge) instead of pressed (positive edge).</p>
+      <p>The protothread_record thread defines behavior of the record and playback buttons. We first need to read port Z of the port expander as those are connected to the record, playback left and playback right buttons. Next, we check if the record button has been pressed with a very similar approach to the one used in figure 8, except this time, an LED will light up to indicate that we are recording, whereas pressing the record button again will turn off the LED. If we are currently in record mode and we press the left playback button, our code will record all the buttons inputted between those two events and will set a flag which indicated if the left playback button has been pressed. This will clear the record flag. Next, if we are not in record mode and we press the left playback button again, we will go into playback mode, where we playback all the inputs recorded, and directional inputs are reversed depending on whether the player is on the left or right side of the screen. This logic is repeated for the right playback button as well.</p>
+          <p>Finally, the protothread_playback thread will playback the inputs stored in the temp_press array. We first check if we are in playback left or playback right mode, then we check if the system time is zero. If this is true, we save the previous set of inputs and outputs to and from the port expander. If we also observe that the previous input is not the same as the current input, we write all zeros to the port expanders. This is to cancel any recording in progress. Afterwads, we check the array of inputs to be played back, and make use of a switch case statement to write specific numbers corresponding to the pressed button to the port expander. This will "press" a button on the arcade stick, thus playing back all buttons pressed.</p>
+      </section>
+      
   </div>
 
   <!-- FOOTER  -->
