@@ -48,6 +48,18 @@
         .active {
           background-color: #04AA6D;
         }
+        figcaption {
+          background-color: clear;
+          color: black;
+          font-style: italic;
+          padding: 0px;
+          text-align: center;
+        }
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
       </style>
       </head>
 
@@ -68,7 +80,52 @@
   <div id="main_content_wrap" class="outer">
     <section id="main_content" class="inner">
       <h1>Conclusion</h1>
-      <p></p>
+      <p>We are pretty pleased with this project. We completed the project with a bit of time to spare though that's 
+        not without annoying debugging of both the hardware and software variety. We still have some bugs that we didn't 
+        have time to get through such as the fast RC (roman cancel) combos not between inputted correctly. Fast RC
+        are explained in the appendix. We think that the PIC32 controller doesn't record it fast enough and therefore 
+        it doesn't record the RC in time. However, we didn't have enough time to figure it out. 
+      </p>
+      <p>
+        This device actually conform to the applicable standard which the controller can be used in gameplay. Since all the 
+        hardware and software are within the controller, then a person can cheat with the controller as an anti-anti cheat device. Most
+        anti-cheat software tries to detect if the player are using some sort of software to like increase their health 
+        or to give unlimited bar. However, the controller only allows the player to cheat only with recording combos beforehand and 
+        then playback during the match. Another thing to improve our design is related to these anti-cheat software. We can imagined 
+        that there's some anti-cheat software that will detect if the player uses the combo with the same timing as before and will flag 
+        the player. To beat that anti-cheat software in particular, we can probably vary the timing of the combo from the PIC32. Then 
+        the anti-anti-cheat hardware will be actually undetectable. I would not recommend though bringing this controller to a in-person 
+        tournament since people can see your buttons though. However, play away with this controller in a online tournament! 
+      </p>
+      <p>
+        In addition to an anti-anti-cheat device for all types of players, it can also be used as an accessibility device as long 
+        they have another person to actual input the combo at first. Some people might not be able to do certain combos due to disabilities.
+        Our controller, as long someone else input the combo, will let the person play the combo with only a tap of a button, letting them 
+        use the hardest combos with ease. 
+      </p>
+      <h3>Intellectual Property Considerations</h3>
+      <p>We did reuse some of the code used in this class, however, most of the software was designed on our own. We did have 
+        to reverse engineered a bit of the controller to understand how the controller get the inputs from the buttons and 
+        the joystick. We opened the inside to see it as seen in Figure 1 below. We didn't get permission techincally from the 
+        company to open up the controller. However, the controller manufacturers know that the fighting community does mod their 
+        joystick controller, and therefore it's expected that the joystick controller will be opened at some point. 
+        As such, We don't expect it to become too much of a problem not getting permission. 
+      </p>
+      <figure>
+        <img src = "images/inside.png" alt="button_layout" style="width:50%;">
+        <figcaption>Figure 1. Us figuring out the inside (with Kofi and Bryce)
+        </figcaption>
+      </figure>
+      <h3>Ethical Considerations</h3>
+      <p>Though our design does promote cheating which is unethical in it's own sense, it doesn't hurt or exclude anyone which the
+        IEEE Code of Ethics deals with. 
+      </p>
+      <h3>Safety Considerations</h3>
+      <p>There's none that we can really think of unless the user is stupid.</p>
+      <h3>Legal Considerations</h3>
+      <p>The only additional hardware/software that we used is the controller which was explained in the Intellectual
+        Property Considerations.
+      </p>
     </section>
   </div>
 

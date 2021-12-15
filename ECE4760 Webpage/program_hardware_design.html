@@ -48,6 +48,18 @@
         .active {
           background-color: #04AA6D;
         }
+        figcaption {
+          background-color: clear;
+          color: black;
+          font-style: italic;
+          padding: 0px;
+          text-align: center;
+        }
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
       </style>
       </head>
 
@@ -68,7 +80,104 @@
   <div id="main_content_wrap" class="outer">
     <section id="main_content" class="inner">
       <h1>Program/Hardware Design</h1>
-      <p></p>
+      <h2>Hardware Design</h2>
+      <p>The hardware of our final project is designed to enable the PIC32 to read the button inputs, 
+        spoof the button so that the button appears pressed to the PCB onboard the arcade stick, 
+        and so that all circuits leading back to the PIC32 are electrically protected. 
+        Our project is responsible for controlling 12 buttons related to gameplay, 
+        as well as reading three buttons to control recording and playback. 
+        To illustrate how all 12 of the button control circuits work, we will examine the data path of one of them.
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image4.png" alt="button_layout">
+        <figcaption>Figure 1. PIC32 schematic</figcaption>
+      </figure>
+      <p>The signals interfacing with the buttons originate from the PIC32 over a single SPI channel. 
+        The software onboard uses SPI to communicate with two port expanders which we use to communicate with all buttons on board. 
+        RB15 is SCK, RB5 is MOSI, and RA4 is MISO. The chip selects are RB9 for port expander 1 and RA0 for port expander 2. 
+        The final connected pinout is RA2, which is used to control the recording LED. 
+        The recording LED illuminates when the software is recording inputs.  
+        No other headers on the PIC32 are connected other than the necessary power, ground, and reset button.
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image6.png" alt="button_layout" style="width:50%;">
+        <figcaption>Figure 2. Recording LED.
+        </figcaption>
+      </figure>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image5.png" alt="button_layout" style="width:50%;">
+        <figcaption>Figure 3. Port expanders.
+        </figcaption>
+      </figure>
+      <p>
+        The SPI channel is responsible for interfacing with two port expanders. 
+        Each button on the arcade stick receives two GPIO pins: one for reading the button state (input), 
+        and one for controlling if the button is electrically pressed or not (output). Since we have 12 buttons, 
+        we need 24 GPIO pins in addition to the three record/playback control buttons, bringing the total to 27 GPIO pins. 
+        The PIC32 is unable to accommodate so many GPIO pins, so external port expanders are required. 
+        Each port expander has 2 ports of 8 pins, so we decided to use two port expanders to have 32 available pins to use, 
+        of which we use 27. The reset of the port expander is tied together with that of the PIC32, 
+        and the configuration pins are all grounded as they are on the big board from class. 
+        The interrupt pins are not connected since the software uses polling to check the buttons. Each pair of GPIO pins, 
+        for example Y0 and Y1, are responsible for controlling a single button. Even numbers (0, 2, 4, 6) are inputs, 
+        and odd numbers (1, 3, 5, 7) are outputs. Using this GPIO scheme we were able to mitigate confusion during the wiring process.
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image8.png" alt="button_layout" style="width:50%;">
+        <figcaption>Figure 4. Joystick Read and Write GPIO.
+        </figcaption>
+      </figure>
+      <p>
+        Figure 4 shows the circuitry for the joystick’s GPIO. This circuit is duplicated twice: once for the XYAB GPIO, 
+        and one for the LT LB RT RB GPIO. Thus, we have 12 button control circuits total. Each button is represented by an SPST switch. 
+        When the button is pressed, both the GPIO input from the port expander and the input from the PCB read low. Otherwise, 
+        the circuit is connected to a 3.3V pullup so they read high. This matches the hardware on the arcade stick. 
+        When the button is pressed, an indicator LED also lights up to confirm that the button is registered as pressed. 
+        The second GPIO from the port expander is an output and is connected to the gate of an n-channel MOSFET. 
+        When the output is set high, the MOSFET allows current to flow through and forces the node at the drain to be electrically low. 
+        This can be read on the port expander and PCB. In addition, this turns the LED on as well. 
+        As a result the LED in each circuit is extremely useful for debugging.
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image7.png" alt="button_layout" style="width:50%;">
+        <figcaption>Figure 5. Arcade stick PCB headers.
+        </figcaption>
+      </figure>
+      <p>On the arcade stick, each button has two inputs, one of which is pulled up. 
+        The ground of one of these inputs is connected to the PIC32 ground so that the PCB logic highs and lows can be manipulated 
+        by the PIC32. The rest are not connected for simplicity. 
+        The arcade stick inputs are connected to the corresponding node of the GPIO inputs from the port expander.
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image2.png" alt="button_layout" style="width:50%;">
+        <figcaption>Figure 6. Record/playback control buttons.
+        </figcaption>
+      </figure>
+      <p>
+        The record and playback control buttons are onboard the arcade stick on a separate PCB. 
+        The wires from the PCB header we are concerned with are the three logic wires pulled high responsible for reading each button, 
+        and a single ground wire. The logic wires are spliced so that they can be plugged into the port expanders for reading. 
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image1.png" alt="button_layout">
+        <figcaption>Figure 7. Full schematic.
+        </figcaption>
+      </figure>
+      <p>When all components work in tandem, 
+        the software is not only able to control the outputs of each button and read the state of each button, 
+        but also able to receive input from the user to determine whether a combo should be recorded or played back. 
+      </p>
+      <h2>Software Design</h2>
+      <p>The software is designed to record a single combo and the timing of the inputs, 
+        as well as play the combos back with said timing. The program is split into four parts: the setup, the read button thread, 
+        the record/playback control thread, and the write button thread. 
+        The setup occurs at the top of the program file and inside the main file. 
+      </p>
+      <figure>
+        <img src = "images/HardwareSoftwareDesign/image3.png" alt="button_layout">
+        <figcaption>Figure 8. Initial setup of button enum, button press struct, and recorded press arrays.
+        </figcaption>
+      </figure>
     </section>
   </div>
 
