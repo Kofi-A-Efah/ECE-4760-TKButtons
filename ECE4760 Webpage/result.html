@@ -77,9 +77,13 @@
         <img src="images/IMG_6166.jpg">
         <p><center>Figure 2: Final Circuit with Port Expanders</center></p>
       <p>The next major milestone was to build the final circuit (Fig 2). This was likely the most debugging-intensive part of the final project. After building the final circuit, we would observe a lot of strange behavior of the LEDs. This was a combination of the LEDs staying on when they weren't supposed to, LEDs dimming, and LEDs not responding as expected when the button was being pressed. After some discussion with the course instructor, we decided to replicate the circuit on a protoboard. This also did nothing to solve the issue. After careful deliberation, we decided to review the schematic, and discovered that there were some disconnected pins to the port expander. After connecting these, and some light debugging of the record and playback code, as well as writing an entirely new library for the second port expander, we were finally able to read from and write to the port expanders, and tested this with simple code that would blink all the LEDs in our circuit. </p>
-      <p>Now that we were finished with most of the code, it was time to wire everything to the arcade stick. This was a relatively simple endeavor, and once we had connected them all, we tried to record and playback input and visualize it using the fighting game. We noticed that it would record and playback correctly, but we would playback the wrong buttons. This required a simple, but somewhat tedious fix, as we would need to make sure all the connections to the buttons were correct and most importantly, consistent with our code. The final product is as shown below (All wires go under the Arcade Stick!).</p>
-        <img src="images/IMG_5142.PNG" width = "800">
-        <p><center>Figure 3: Final Circuit with Arcade Stick</center></p>        
+      <p>Now that we were finished with most of the code, it was time to wire everything to the arcade stick. This was a relatively simple endeavor, and once we had connected them all, we tried to record and playback input and visualize it using the fighting game. We noticed that it would record and playback correctly, but we would playback the wrong buttons. This required a simple, but somewhat tedious fix, as we would need to make sure all the connections to the buttons were correct and most importantly, consistent with our code. The final product is as shown below (All wires go under the Arcade Stick!). The following video showcases the TKB input described in the introduction being played back three times in quick succession. The inputs are played back with astounding accuracy, shown in the animation in the bottom left corner of the game.</p>
+        <img src="images/IMG_5142.PNG" height ="600" width = "600">
+        <p><center>Figure 3: Final Circuit with Arcade Stick</center></p> 
+        
+        <video width="640" height="480" controls>
+        <source src="videos/IMG_4963.MOV" >
+</video>
     </section>
   </div>
 
